@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Le runner possède déjà l’émulateur : ne pas télécharger sa dernière version.
-test -x "$ANDROID_HOME/emulator/emulator"
+# Version fixe téléchargée depuis Google, indépendante de la dernière archive SDK.
+curl --fail --location --retry 3 https://dl.google.com/android/repository/emulator-linux_x64-11237101.zip -o "$RUNNER_TEMP/luma-emulator.zip"
+echo "cfd54ce620ad5f9f786682ecad88b8b9da7ac48827d57406cc2a31bb8f6e73fe  $RUNNER_TEMP/luma-emulator.zip" | sha256sum -c -
+unzip -q -o "$RUNNER_TEMP/luma-emulator.zip" -d "$ANDROID_HOME"
 "$ANDROID_HOME/emulator/emulator" -version
 sdkmanager 'system-images;android-29;google_apis;x86_64'
 echo no | avdmanager create avd --force --name luma-test --package 'system-images;android-29;google_apis;x86_64' --device pixel_2
