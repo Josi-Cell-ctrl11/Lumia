@@ -7,9 +7,10 @@ curl --fail --location --retry 3 https://dl.google.com/android/repository/emulat
 echo "cfd54ce620ad5f9f786682ecad88b8b9da7ac48827d57406cc2a31bb8f6e73fe  $RUNNER_TEMP/luma-emulator.zip" | sha256sum -c -
 unzip -q -o "$RUNNER_TEMP/luma-emulator.zip" -d "$ANDROID_HOME"
 "$ANDROID_HOME/emulator/emulator" -version
+export ANDROID_AVD_HOME="$RUNNER_TEMP/luma-avd"
+mkdir -p "$ANDROID_AVD_HOME"
 sdkmanager 'system-images;android-29;google_apis;x86_64'
 echo no | avdmanager create avd --force --name luma-test --package 'system-images;android-29;google_apis;x86_64' --device pixel_2
-export ANDROID_AVD_HOME="$HOME/.android/avd"
 "$ANDROID_HOME/emulator/emulator" -avd luma-test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > emulator.log 2>&1 &
 trap 'tail -100 emulator.log; adb emu kill || true' EXIT
 timeout 60 adb wait-for-device
