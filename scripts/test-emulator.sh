@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+sudo apt-get update -qq
+sudo apt-get install -y libpulse0 libnss3 libglu1-mesa libx11-6 libxcb1 libxkbcommon0
 # Version fixe téléchargée depuis Google, indépendante de la dernière archive SDK.
 curl --fail --location --retry 3 https://dl.google.com/android/repository/emulator-linux_x64-11237101.zip -o "$RUNNER_TEMP/luma-emulator.zip"
 echo "cfd54ce620ad5f9f786682ecad88b8b9da7ac48827d57406cc2a31bb8f6e73fe  $RUNNER_TEMP/luma-emulator.zip" | sha256sum -c -
