@@ -9,9 +9,10 @@ unzip -q -o "$RUNNER_TEMP/luma-emulator.zip" -d "$ANDROID_HOME"
 "$ANDROID_HOME/emulator/emulator" -version
 sdkmanager 'system-images;android-29;google_apis;x86_64'
 echo no | avdmanager create avd --force --name luma-test --package 'system-images;android-29;google_apis;x86_64' --device pixel_2
+export ANDROID_AVD_HOME="$HOME/.android/avd"
 "$ANDROID_HOME/emulator/emulator" -avd luma-test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > emulator.log 2>&1 &
-trap 'adb emu kill || true' EXIT
-timeout 180 adb wait-for-device
+trap 'tail -100 emulator.log; adb emu kill || true' EXIT
+timeout 60 adb wait-for-device
 booted=false
 for attempt in $(seq 1 90); do
   if [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ]; then booted=true; break; fi

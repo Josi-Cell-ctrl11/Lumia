@@ -33,6 +33,7 @@ jobs:
       - name: Tester les masques et le rendu sur Android
         run: bash scripts/test-emulator.sh
       - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: Luma-0.2.0-preview
           path: |
@@ -45,3 +46,4 @@ jobs:
           path: |
             app/build/reports/androidTests/
             app/build/reports/lint-results-debug.html
+            emulator.log
