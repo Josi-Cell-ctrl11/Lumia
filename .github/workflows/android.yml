@@ -31,16 +31,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Tester les masques et le rendu sur Android
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          arch: x86_64
-          profile: pixel_2
-          disable-animations: true
-          script: |
-            gradle --no-daemon connectedDebugAndroidTest
-            mkdir -p screenshots
-            adb pull /sdcard/Android/data/com.josias.luma/files/. screenshots/
+        run: bash scripts/test-emulator.sh
       - uses: actions/upload-artifact@v4
         with:
           name: Luma-0.2.0-preview
