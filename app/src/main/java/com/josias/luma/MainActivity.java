@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
         super.onActivityResult(request,result,data);
         if(request==10 && result==RESULT_OK && data!=null && data.getData()!=null) {
             Uri uri=data.getData();
-            try { getContentResolver().takePersistableUriPermission(uri,data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION); getPreferences(0).edit().putString("wallpaper",uri.toString()).apply(); home(); }
+            try { getContentResolver().takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION); getPreferences(0).edit().putString("wallpaper",uri.toString()).apply(); home(); }
             catch(RuntimeException e) { Toast.makeText(this,"Impossible de conserver cette photo. Choisis une autre image.",Toast.LENGTH_LONG).show(); }
         }
     }
